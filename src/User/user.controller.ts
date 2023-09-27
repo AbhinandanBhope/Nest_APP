@@ -36,10 +36,10 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put()
-  updateUser(@Body(new ValidationPipe()) userBody: UserUpateDto,@Request() req): Promise<SavedUpdate> {
-    console.log('user',req.user);
-    return this.userService.updateUser(userBody,req.user);
+  @Put('/:id')
+  updateUser(@Body(new ValidationPipe()) userBody: UserUpateDto,@Param() Id:string): Promise<SavedUpdate> {
+    console.log('user',Id['id']);
+    return this.userService.updateUser(userBody,Id['id']);
   }
   @UseGuards(JwtAuthGuard)
   @Delete('/:id')

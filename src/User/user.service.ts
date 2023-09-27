@@ -109,10 +109,11 @@ export class UserService {
       return null;
     }
   }
-  async updateUser(body: UserUpateDto, user):Promise<SavedUpdate> {
+  async updateUser(body: UserUpateDto, Id):Promise<SavedUpdate> {
     try {
+      
       const userFound = await this.userRepository.findOneBy({
-        id: user.id,
+        id: Id,
       });
       if (!userFound || userFound.isDeleted) {
         throw new NotFoundException('User not found', {
