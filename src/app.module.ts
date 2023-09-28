@@ -11,6 +11,8 @@ import { User } from 'dataBase/entity/user.entity';
 import { JwtService } from '@nestjs/jwt/dist';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
+import { EmailService } from './email/email.service';
+
 
 @Module({
   imports: [
@@ -20,10 +22,11 @@ import { AuthService } from './auth/auth.service';
     TypeOrmModule.forFeature([User]),
     AppModule,
     AuthModule,
-    User,  ConfigModule.forRoot({envFilePath:['.env'],})
+    User,  ConfigModule.forRoot({envFilePath:['.env'],}), 
+    
   ],
   controllers: [AppController, UserController],
-  providers: [AppService, UserService, JwtService, AuthService],
+  providers: [AppService, UserService, JwtService, AuthService, EmailService],
   
 })
 export class AppModule {}

@@ -12,9 +12,7 @@ export class UserDto {
   @IsEmail()
   email: string;
 
-  @IsString()
-  @IsNotEmpty()
-  password: string;
+
 
   @IsString()
   @IsEnum([ 'user','admin'])

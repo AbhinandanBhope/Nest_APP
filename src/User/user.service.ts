@@ -15,6 +15,7 @@ import { UserLoginDto } from 'src/userDto/userLogin.dto';
 import { UserUpateDto } from 'src/userDto/userUpdate.dto';
 import { UserDelete } from 'src/userDto/userDelete.dto';
 import { SavedUpdate } from 'src/userDto/savedUpdate.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class UserService {
@@ -23,11 +24,15 @@ export class UserService {
     private userRepository: Repository<User>,
     @InjectRepository(User)
     private jwtService: JwtService,
+    private readonly emailService:EmailService
   ) {}
   async getUser(userId:string): Promise<any> {
 
 
    const  NuserId=Number(userId);
+
+  
+
 
    
     if(Number.isNaN(NuserId)){
@@ -77,11 +82,17 @@ export class UserService {
       }
 
       const user = new User();
+      const pass= Math.random().toString(36).slice(2) +
+      Math.random().toString(36)
+      .toUpperCase().slice(2);
+      const Useremail =userBody.email;
       user.first_name = userBody.first_name;
-      user.last_name = userBody.last_name;
-      user.password = Md5.hashStr(userBody.password);
+      user.last_name = userBody.last_name; 
+      user.password =  Md5.hashStr(pass);
       user.email = userBody.email;
       user.role = userBody.role;
+      const email =  await this.sendEmail( userBody.email,pass);
+      console.log("emai",userBody.email);
 
       const userSaved = await this.userRepository.save(user);
 
@@ -162,4 +173,13 @@ export class UserService {
       });
     }
   }
+  
+  async sendEmail (email ,pass){
+    await this.emailService.sendEmail(email ,pass
+     
+    );
+    return 'Email sent!';
+
+  }
+  
 }
