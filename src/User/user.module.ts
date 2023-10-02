@@ -9,6 +9,8 @@ import { User } from 'dataBase/entity/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { AuthModule } from 'src/auth/auth.module';
 import { EmailService } from 'src/email/email.service';
+import { GoogleStrategy } from 'src/auth/google.strategy';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -16,7 +18,7 @@ import { EmailService } from 'src/email/email.service';
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [UserController],
-  providers: [UserService, JwtService,EmailService],
+  providers: [UserService, JwtService,EmailService,GoogleStrategy],
   exports: [UserService]
 })
 export class UserModule {}

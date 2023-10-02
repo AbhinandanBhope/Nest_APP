@@ -12,7 +12,7 @@ import { JwtService } from '@nestjs/jwt/dist';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
 import { EmailService } from './email/email.service';
-
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -21,7 +21,7 @@ import { EmailService } from './email/email.service';
     UserModule,
     TypeOrmModule.forFeature([User]),
     AppModule,
-    AuthModule,
+    AuthModule,ScheduleModule.forRoot(),
     User,  ConfigModule.forRoot({envFilePath:['.env'],}), 
     
   ],

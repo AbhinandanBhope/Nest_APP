@@ -17,6 +17,9 @@ import { JwtStrategy } from 'src/auth/jwt.strategy';
 import { SavedUser } from 'src/userDto/savedUser.dto';
 import { UserDelete } from 'src/userDto/userDelete.dto';
 import { SavedUpdate } from 'src/userDto/savedUpdate.dto';
+import { GoogleOAuthGuard } from 'src/auth/google-oauth.guard';
+import { Cron } from '@nestjs/schedule/dist';
+
 
 @Controller('user')
 export class UserController {
@@ -49,6 +52,18 @@ export class UserController {
 
   }
 
+  @Get()
+  @UseGuards(GoogleOAuthGuard)
+  async googleAuth(@Request() req) {}
+  @Get('oauth2/redirect/google.')
+  @UseGuards(GoogleOAuthGuard)
+  googleAuthRedirect(@Request() req) {
+    return this.userService.googleLogin(req);
 
 
+
+
+}
+ 
+ 
 }

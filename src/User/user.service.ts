@@ -1,7 +1,7 @@
 import {
   Injectable,
   BadRequestException,
-  NotFoundException,
+  NotFoundException,Logger
 } from '@nestjs/common';
 import { User } from 'dataBase/entity/user.entity';
 import { Repository } from 'typeorm';
@@ -16,6 +16,7 @@ import { UserUpateDto } from 'src/userDto/userUpdate.dto';
 import { UserDelete } from 'src/userDto/userDelete.dto';
 import { SavedUpdate } from 'src/userDto/savedUpdate.dto';
 import { EmailService } from 'src/email/email.service';
+import { Cron } from '@nestjs/schedule/dist/decorators';
 
 @Injectable()
 export class UserService {
@@ -24,8 +25,13 @@ export class UserService {
     private userRepository: Repository<User>,
     @InjectRepository(User)
     private jwtService: JwtService,
-    private readonly emailService:EmailService
+    private readonly emailService:EmailService,
+    
+   
   ) {}
+
+
+  
   async getUser(userId:string): Promise<any> {
 
 
@@ -181,5 +187,20 @@ export class UserService {
     return 'Email sent!';
 
   }
+  googleLogin(req) {
+    if (!req.user) {
+      return 'No user from google';
+    }
+
+    return {
+      message: 'User information from google',
+      user: req.user,
+    };
+  }
+  @Cron('1 * * * * *')
+  handleCron() {
+    console.log("This is cron job ");
+  }
+
   
 }
