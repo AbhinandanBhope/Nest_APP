@@ -17,6 +17,7 @@ import { UserDelete } from 'src/userDto/userDelete.dto';
 import { SavedUpdate } from 'src/userDto/savedUpdate.dto';
 import { EmailService } from 'src/email/email.service';
 import { Cron } from '@nestjs/schedule/dist/decorators';
+import { SchedulerRegistry } from '@nestjs/schedule/dist/scheduler.registry';
 
 @Injectable()
 export class UserService {
@@ -26,6 +27,7 @@ export class UserService {
     @InjectRepository(User)
     private jwtService: JwtService,
     private readonly emailService:EmailService,
+    private schedulerRegistry: SchedulerRegistry
     
    
   ) {}
@@ -197,9 +199,16 @@ export class UserService {
       user: req.user,
     };
   }
-  @Cron('1 * * * * *')
+  @Cron(' 8 * * * *',{name:'notifications'})
   handleCron() {
     console.log("This is cron job ");
+    this.getDate();
+  }
+  getDate(){
+  const job = this.schedulerRegistry.getCronJob('notifications');
+
+job.stop();
+console.log(job.lastDate());
   }
 
   
